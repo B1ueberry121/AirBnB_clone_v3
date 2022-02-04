@@ -72,7 +72,6 @@ class DBStorage:
         self.__session = Session
 
     def get(self, cls, id):
-        """Retrieve one object"""
         obj_dict = self.all(cls)
         for key in obj_dict.values():
             if key.id == id:
@@ -80,7 +79,6 @@ class DBStorage:
         return None
 
     def count(self, cls=None):
-        """Count the number of objects in your storage"""
         if cls:
             return len(self.all(cls))
         return len(self.all())
