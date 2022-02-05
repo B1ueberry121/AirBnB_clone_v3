@@ -16,6 +16,7 @@ def close_storage(error):
     ''' Calls the close method from storage '''
     storage.close()
 
+
 @app.errorhandler(404)
 def resource_notfound(e):
     """404 on routes not found"""
