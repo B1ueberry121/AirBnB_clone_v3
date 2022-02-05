@@ -2,7 +2,7 @@
 ''' Module starts an API '''
 
 # Imports Flask task
-from flask import Flask
+from flask import Flask, jsonify
 from models import storage
 from api.v1.views import app_views
 from os import getenv
@@ -16,6 +16,10 @@ def close_storage(error):
     ''' Calls the close method from storage '''
     storage.close()
 
+@app.errorhandler(404)
+def resource_notfound(e):
+    """404 on routes not found"""
+    return jsonify({"error": "Not found"}), 404
 
 if __name__ == "__main__":
     """ Only executes as main """
