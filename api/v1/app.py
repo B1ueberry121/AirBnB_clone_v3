@@ -6,10 +6,12 @@ from flask import Flask
 from models import storage
 from api.v1.views import app_views
 
+
 @app.teardown_appcontext
 def close_storage(error):
     ''' Calls the close method from storage '''
     storage.close()
+
 
 if __name__ == "__main__":
     """ Only executes as main """
