@@ -2,10 +2,10 @@
 """Retrieves the list of all Place objects of a City"""
 
 from flask import jsonify, abort, request, Response
-from models.storage import storage
-from models.place import Place
-from models.user import User
+from models import storage
 from models.city import City
+from models.user import User
+from models.place import Place
 from api.v1.views import app_views
 
 
