@@ -12,10 +12,9 @@ from api.v1.views import app_views
 @app_views.route('/states/<state_id>/cities', methods=['GET', 'POST'],
                  strict_slashes=False)
 def get_cities(state_id=None):
-    """ Handles HTTP request of all the city object """
-
+    """ Handles HTTP request of all the city obj """
     state = storage.get(State, state_id)
-    if state is None:
+    if not state:
         abort(404)
 
     if request.method == 'POST':
@@ -26,22 +25,21 @@ def get_cities(state_id=None):
             return Response("Missing name", 400)
         city = City(name=data.get('name'), state_id=state.id)
         city.save()
-        return jsonify(city.to_ict()), 201
+        return jsonify(city.to_dict()), 201
 
     all_cities = storage.all('City')
     cities = []
 
     for city in all_cities.values():
         if city.state_id == state.id:
-            cities.append(cities.to_dict())
+            cities.append(city.to_dict())
     return jsonify(cities)
 
 
-@app_views.route('/cities/<city_id>', methods=['GET', 'PUT', 'DELETE'],
+@app_views.route('/cities/<city_id>', methods=['GET', 'DELETE', 'PUT'],
                  strict_slashes=False)
 def get_city(city_id=None):
-    """ Handles HTTP requests of all city objects of a state object"""
-
+    """ Handles HTTP requests of a single city obj """
     city = storage.get(City, city_id)
     if city is None:
         abort(404)
