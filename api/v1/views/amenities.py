@@ -10,7 +10,7 @@ from api.v1.views import app_views
 @app_views.route('/amenities/', methods=['GET', 'POST'], stict_slashes=False)
 def get_amenities():
     """Handles HTTP request for all amenities objects"""
-
+    
     if request.method == 'POST':
         data = request.get_json()
         if not data:
@@ -33,7 +33,7 @@ def get_amenities():
 def get_amenity(amenity_id=None):
     """Handles HTTP request of a single amenity object"""
     amenity = storage.get(Amenity, amenity_id)
-    if amenity is none:
+    if amenity is None:
         abort(404)
 
     if request.method == 'DELETE':
@@ -47,6 +47,7 @@ def get_amenity(amenity_id=None):
             return Response("Not a JSON", 400)
         data['id'] = amenity_id
         data['created_at'] = amenity.created_at
+        data['updated_at'] = amenity.updated_at
         amenity.__init__(**data)
         amenity.save()
         return jsonify(amenity.to_dict()), 200
