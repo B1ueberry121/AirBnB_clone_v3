@@ -9,7 +9,8 @@ from models.city import City
 from api.v1.views import app_views
 
 
-@app_views.route('/cities/<city_id>', methods=['GET', 'PUT', 'DELETE'], strict_slashes=False)
+@app_views.route('/cities/<city_id>', methods=['GET', 'PUT', 'DELETE'],
+                 strict_slashes=False)
 def get_city():
     """ Handles HTTP requests of all city objects of a state object"""
 
@@ -28,6 +29,7 @@ def get_city():
             return Response("Not a JSON", 400)
         data['id'] = city.id
         data['created_at'] = city.created_at
+        data['state_id'] = city.state_id
         city.__init__(**data)
         city.save()
         return jsonify(city.to_dict()), 200
@@ -53,6 +55,7 @@ def get_cities(state_id=None):
         city = City(name=data.get('name'), state_id=state.id)
         city.save()
         return jsonify(city.to_ict()), 201
+
     all_cities = storage.all('City')
     cities = []
 
@@ -60,4 +63,3 @@ def get_cities(state_id=None):
         if city.state_id == state.id:
             cities.append(cities.to_dict())
     return jsonify(cities)
-
