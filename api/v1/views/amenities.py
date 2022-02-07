@@ -7,10 +7,9 @@ from models.amenity import Amenity
 from api.v1.views import app_views
 
 
-@app_views.route('/amenities/', methods=['GET', 'POST'],
-                 stict_slashes=False)
+@app_views.route('/amenities/', methods=['GET', 'POST'], stict_slashes=False)
 def get_amenities():
-    """Handles HTTP request for all amenities"""
+    """Handles HTTP request for all amenities objects"""
 
     if request.method == 'POST':
         data = request.get_json()
@@ -18,7 +17,7 @@ def get_amenities():
             return Response("Not a JSON", 400)
         if 'name' not in data:
             return Response("Missing name", 400)
-        amenity = Amenity(name=data.get('name'), state_id=state.id)
+        amenity = Amenity(name=data.get('name'), amenity_id=amenity.id)
         amenity.save()
         return jsonify(amenity.to_dict()), 201
 
@@ -30,8 +29,7 @@ def get_amenities():
     return jsonify(amenities)
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['GET', 'DELETE', 'PUT'],
-                 stict_slashes=False)
+@app_views.route('/amenities/<amenity_id>', methods=['GET', 'DELETE', 'PUT'], stict_slashes=False)
 def get_amenity(amenity_id=None):
     """Handles HTTP request of a single amenity object"""
     amenity = storage.get(Amenity, amenity_id)
