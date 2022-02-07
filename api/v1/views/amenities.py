@@ -7,10 +7,10 @@ from models.amenity import Amenity
 from api.v1.views import app_views
 
 
-@app_views.route('/amenities/', methods=['GET', 'POST'], stict_slashes=False)
+@app_views.route('/amenities', methods=['GET', 'POST'], stict_slashes=False)
 def get_amenities():
     """Handles HTTP request for all amenities objects"""
-    
+
     if request.method == 'POST':
         data = request.get_json()
         if not data:
@@ -29,7 +29,8 @@ def get_amenities():
     return jsonify(amenities)
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['GET', 'DELETE', 'PUT'], stict_slashes=False)
+@app_views.route('/amenities/<amenity_id>', methods=['GET', 'DELETE', 'PUT'],
+                 stict_slashes=False)
 def get_amenity(amenity_id=None):
     """Handles HTTP request of a single amenity object"""
     amenity = storage.get(Amenity, amenity_id)
@@ -37,8 +38,8 @@ def get_amenity(amenity_id=None):
         abort(404)
 
     if request.method == 'DELETE':
-        sorage.delete(amenity)
-        storage.seave()
+        storage.delete(amenity)
+        storage.save()
         return jsonify({}), 200
 
     if request.method == 'PUT':
@@ -47,7 +48,6 @@ def get_amenity(amenity_id=None):
             return Response("Not a JSON", 400)
         data['id'] = amenity_id
         data['created_at'] = amenity.created_at
-        data['updated_at'] = amenity.updated_at
         amenity.__init__(**data)
         amenity.save()
         return jsonify(amenity.to_dict()), 200
