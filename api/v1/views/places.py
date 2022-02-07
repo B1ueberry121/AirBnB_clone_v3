@@ -3,15 +3,17 @@
 
 from flask import jsonify, abort, request, Response
 from models.storage import storage
-from models.places import Place
+from models.place import Place
 from models.user import User
 from models.city import City
 from api.v1.views import app_views
 
+
 @app_views.route('/cities/<city_id>/places', methods=['GET', 'POST'],
                  strict_slashes=False)
 def get_places(city_id=None):
-    city = storage.get(City, city_id=None)
+    """ Handles HTTP request of all the place objects """
+    city = storage.get(City, city_id)
     if not city:
         abort(404)
 
@@ -21,12 +23,12 @@ def get_places(city_id=None):
             return Response("Not a JSON", 400)
         if 'user_id' not in data:
             return Response("Missing user_id", 400)
+        if 'name' not in data:
+            return Response("Missing name", 400)
         user = storage.get(User, data.get('user_id'))
         if not user:
             abort(404)
-        if 'name' not in data:
-            return Response("Missing name", 400)
-        place = Place(name=data.get('name'), city_id=city.id, user_id=user.id)
+        place = Place(city_id=city.id, user_id=user.id, name=data.get('name'))
         place.save()
         return jsonify(place.to_dict()), 201
 
@@ -38,11 +40,12 @@ def get_places(city_id=None):
     return jsonify(places), 200
 
 
-@app_views.route('/places/<place_id>', method=['GET', 'DELETE', 'PUT'],
+@app_views.route('/places/<place_id>', methods=['GET', 'DELETE', 'PUT'],
                  strict_slashes=False)
 def get_place(place_id=None):
-    place = storage.get(Place, place_id=None)
-    if not places:
+    """ Handles HTTP requests of a single place object """
+    place = storage.get(Place, place_id)
+    if place is None:
         abort(404)
 
     if request.method == 'DELETE':
@@ -59,7 +62,7 @@ def get_place(place_id=None):
         data['city_id'] = place.city_id
         data['created_at'] = place.created_at
         place.__init__(**data)
-        place.save
+        place.save()
         return jsonify(place.to_dict()), 200
 
     return jsonify(place.to_dict()), 200
