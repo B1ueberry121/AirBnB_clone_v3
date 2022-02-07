@@ -3,11 +3,13 @@
 
 from flask import jsonify, abort, request, Response
 from models.storage import storage
-from models.places import Places
+from models.places import Place
+from models.user import User
 from models.city import City
 from api.v1.views import app_views
 
-@app_views.route('/cities/<city_id>/places', methods=['GET', 'POST'], strict_slashes=False)
+@app_views.route('/cities/<city_id>/places', methods=['GET', 'POST'],
+                 strict_slashes=False)
 def get_places(city_id=None):
     city = storage.get(City, city_id=None)
     if not city:
@@ -31,12 +33,13 @@ def get_places(city_id=None):
     all_places = city.places
     places = []
 
-    for place in all_places.values():
+    for place in all_places:
         places.append(place.to_dict())
-    return jsonify(places)
+    return jsonify(places), 200
 
 
-@app_views.route('/places/<place_id>', method=['GET', 'DELETE', 'PUT'], strict_slashes=False)
+@app_views.route('/places/<place_id>', method=['GET', 'DELETE', 'PUT'],
+                 strict_slashes=False)
 def get_place(place_id=None):
     place = storage.get(Place, place_id=None)
     if not places:
