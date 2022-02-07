@@ -9,7 +9,6 @@ from api.v1.views import app_views
 
 @app_views.route('/amenities/', methods=['GET', 'POST'],
                  stict_slashes=False)
-
 def get_amenities():
     """Handles HTTP request for all amenities"""
 
@@ -33,12 +32,11 @@ def get_amenities():
 
 @app_views.route('/amenities/<amenity_id>', methods=['GET', 'DELETE', 'PUT'],
                  stict_slashes=False)
-
 def get_amenity(amenity_id=None):
     """Handles HTTP request of a single amenity object"""
     amenity = storage.get(Amenity, amenity_id)
     if amenity is none:
-        abort (404)
+        abort(404)
 
     if request.method == 'DELETE':
         sorage.delete(amenity)
