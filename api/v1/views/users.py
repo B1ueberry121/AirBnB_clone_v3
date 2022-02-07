@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" This module handles the HTTP nethod of all user obj """
+""" This module handles the HTTP methods of a user object"""
 from flask import jsonify, abort, request, Response
 from models import storage
 from models.user import User
@@ -8,7 +8,7 @@ from api.v1.views import app_views
 
 @app_views.route('/users', methods=['GET', 'POST'], strict_slashes=False)
 def get_users():
-    """ Handles the HTTP requests of all the user obj """
+    """ Handles HTTP request of all the user objects """
 
     if request.method == 'POST':
         data = request.get_json()
@@ -17,9 +17,9 @@ def get_users():
         if 'email' not in data:
             return Response("Missing email", 400)
         if 'password' not in data:
-            return Response("Missing password" 400)
+            return Response("Missing password", 400)
         user = User(email=data.get('email'), password=data.get('password'))
-        user = save()
+        user.save()
         return jsonify(user.to_dict()), 201
 
     all_users = storage.all('User')
@@ -33,7 +33,7 @@ def get_users():
 @app_views.route('/users/<user_id>', methods=['GET', 'DELETE', 'PUT'],
                  strict_slashes=False)
 def get_user(user_id=None):
-    """ Handles the HTTP requests of a single user obj """
+    """ Handles HTTP requests of a single user object """
     user = storage.get(User, user_id)
     if user is None:
         abort(404)
