@@ -1,5 +1,4 @@
-
-#REST API
+# REST API
 
 REST API is a software architectural style for Backend.
 
@@ -17,13 +16,13 @@ Example:
         first_name, last_name, date_of_birth
         JSON format
 
-###There are 6 constraints:
-#1. Uniform Interface
+### There are 6 constraints:
+# 1. Uniform Interface
 
     Define the interface between client-server
     Simple and can be split in small parts
 
-###HTTP verbs
+### HTTP verbs
 
     GET:
         Read representation of a resource or a list of resources
@@ -34,7 +33,7 @@ Example:
     DELETE:
         Remove an existing resource
 
-###URIs - resource name
+### URIs - resource name
 
 A resource representation is accessible by a URI:
 
@@ -45,7 +44,7 @@ A resource representation is accessible by a URI:
     PUT /users/12: path for updating the user id = 12
     DELETE /users/12/addresses/2: path for deleting the address id = 2 of the user id = 12
 
-###HTTP Response
+### HTTP Response
 
 In the HTTP Response, the client should verify the information of two things:
 
@@ -63,12 +62,12 @@ Some important status code:
     404: not found => resource doesn’t exist
     500: internal server error
 
-#2. Stateless
+# 2. Stateless
 
 The server is independent of the client. The server doesn’t store user client information/state. Each request contains enough context to process it (HTTP Headers, etc.)
 
 Some authentication systems like OAuth have to store information on the server side but they do it with REST API design.
-#3. Cacheable
+# 3. Cacheable
 
 All server responses (resource representation) are cacheable:
 
@@ -77,13 +76,13 @@ All server responses (resource representation) are cacheable:
     Negotiated
 
 Caches are here to improve performances. In a REST API, clients don’t care about the caching strategy, if the resource representation comes from a cache or from a database…
-#4. Client-Server
+# 4. Client-Server
 
 REST API is designed to separate Client from the Server. The server doesn’t know who is talking to it. Clients are not concerned with data storage => the portability of client code is improved. Servers are not concerned with the user interface or user state so that servers can be simpler and more scalable
-#5. Layered System
+# 5. Layered System
 
 Client can’t assume direct connection to server. Intermediary servers may improve system scalability by enabling load-balancing and by providing shared caches. Layers may also enforce security policies.
-#6. Code on Demand (optional)
+# 6. Code on Demand (optional)
 
 Server can temporarily:
 
